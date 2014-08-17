@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Script-Type" content="text/javascript">
+	<meta name="description" content="■">
+	<meta name="keywords" content="■">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0">
+	<link rel="stylesheet" href="css/import.css">
+	<script src="js/jquery.js"></script>
+	<script src="js/common.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var url = 'https://api.flickr.com/services/rest/?method=flickr.photos.search';
+			var key = 'e2d99c3ff7885e30c624973bb84fdb09';
+			var itemLimit = 20;
+			var page = 1;
+			var usr = '126218952%40N06';
+			var usr = '15823425@N00';
+
+			function getPhoto(c) {
+			page = !c ? page :c;
+      $("#loading").addClass("ok");
+			$.ajax({
+				type: 'GET',
+				url: url+'&api_key='+key+'&per_page='+itemLimit+'&page='+page+'+&user_id='+usr+'&format=json&nojsoncallback=1',
+				dataType: 'json',
+				success: function(json){
+					console.log(json);
+					var itemId = [];
+  		    $("#loading").removeClass("ok");
+					for ( i=0; i < json.photos.photo.length; i ++ ) {
+						$('#FlickrPhotos').append('<p>'+json.photos.photo[i].id+'</p>');
+					}
+				}
+			});
+			}
+
+			getPhoto();
+
+			$('p.btn').click(function() {
+				getPhoto(3);
+			});
+});
+	</script>
+	<title>■</title>
+</head>
+<body>
+<div id="loading">
+</div>
+<div id="FlickrPhotos">
+</div>
+<p class="btn">aaaaaaa</p>
+</body>
+</html>
