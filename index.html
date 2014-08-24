@@ -9,16 +9,16 @@
 	<link rel="stylesheet" href="css/import.css">
 	<script src="js/jquery.js"></script>
 	<script src="js/common.js"></script>
+	<script src="js/jquery.preload.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var url = 'https://api.flickr.com/services/rest/?method=flickr.photos.search';
-			var key = '';
-			var itemLimit = 20;
+			var url = 'https://api.flickr.com/services/rest/';
+			var key = 'e2d99c3ff7885e30c624973bb84fdb09';
+			var itemLimit = 40;
 			var page = 1;
-			var usr = '126218952%40N06';
-			var usr = '15823425@N00';
-
-			
+			var usr = '126218952@N06';
+			var tags = window.location.search;
+			var showSumNum = 0;
 
 			function pageCounter(p) {
 				var count = p;
@@ -28,43 +28,79 @@
 			}
 			sumObj = pageCounter(2);
 
-			function getPhoto(c) {
-			page = !c ? page :c;
-	    	$("#loading").addClass("ok");
+			function preloadComplate(e) {
+				$('body').removeClass("load");
+
+				for(var i = 0;i < e.imgs.length;i++) {
+					$('#FlickrPhotos').append('<li class="off"><a href="' + e.imgs[i].replace("_s","") + '"><img src="' + e.imgs[i] + '"></a></li>');
+					setTimeout(function () {
+						$('#FlickrPhotos li').eq(showSumNum).removeClass("off");
+						showSumNum++
+					 },i*10);
+				}
+			}
+
+			//get Tag
+			function getTags() {
 				$.ajax({
 					type: 'GET',
-					url: url+'&api_key='+key+'&per_page='+itemLimit+'&page='+page+'+&user_id='+usr+'&format=json&nojsoncallback=1',
+					url: url+'?method=flickr.tags.getListUser&api_key='+key+'&user_id='+usr+'&format=json&nojsoncallback=1',
+					dataType: 'json',
+					success : function(tags){
+						console.log(tags);
+					}
+				})
+			}
+
+			//get Photo
+			function getPhoto(c) {
+				page = !c ? page :c;
+
+				$.ajax({
+					type: 'GET',
+					url: url+'?method=flickr.photos.search&api_key='+key+'&per_page='+itemLimit+'&page='+page+'+&user_id='+usr+'&format=json&nojsoncallback=1',
 					dataType: 'json',
 					success: function(json){
 						console.log(json);
-						var itemId = [];
-	  		   			$("#loading").removeClass("ok");
+						var imgPath = [];
 						for ( i=0; i < json.photos.photo.length; i ++ ) {
 							var farm = json.photos.photo[i].farm;
 							var server = json.photos.photo[i].server;
 							var secret = json.photos.photo[i].secret;
 							var id = json.photos.photo[i].id;
-							$('#FlickrPhotos').append('<p><a href="http://farm'+farm+'.staticflickr.com/'+server+'/'+id+'_'+secret+'_b.jpg" class="shots" ><img src="http://farm'+farm+'.staticflickr.com/'+server+'/'+id+'_'+secret+'_s.jpg" />'+'</a></p>');
+							imgPath[i] = 'http://farm'+farm+'.staticflickr.com/'+server+'/'+id+'_'+secret+'_s.jpg';
 						}
-						return page = c;
+						$(window).preload({
+							imgs : imgPath,
+							onComplete : function(e){preloadComplate(e);},
+							loadFunction : function(e){},
+							timerSpeed : 10
+						});
 					}
 				});
 			}
 
-			getPhoto();
+		
 
-			$('p.btn').click(function() {
+			getTags();
+			getPhoto();
+			$("body").addClass("load");
+
+			$('p.nextbtn').click(function() {
 				getPhoto(sumObj());
+				$("body").addClass("load");
 			});
 });
 	</script>
 	<title>■</title>
 </head>
 <body>
-<div id="loading">
-</div>
-<div id="FlickrPhotos">
-</div>
-<p class="btn">aaaaaaa</p>
+<form>
+<input type="text">
+<input type="submit" value="Seach">
+</form>
+<ul id="FlickrPhotos">
+</ul>
+<p class="nextbtn">次の20件を表示</p>
 </body>
 </html>
