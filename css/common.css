@@ -1,8 +1,8 @@
 @charset "utf-8";
 
 /* common */
-body.load:before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(42,42,42,0.6); }
-body.load:after { content: url("../img/common/load.gif"); position: fixed; top: 0; left: 0; right: 0; bottom: 0; margin: auto; height: 66px; width: 66px; }
+body.load:before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(42,42,42,0.6); z-index: 999; }
+body.load:after { content: url("../img/common/load.gif"); position: fixed; top: 0; left: 0; right: 0; bottom: 0; margin: auto; height: 66px; width: 66px; z-index: 1000; }
 
 ul#FlickrPhotos li.off { opacity: 0; }
 ul#FlickrPhotos li { float: left; list-style: none; opacity: 1;
