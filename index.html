@@ -10,11 +10,12 @@
 	<script src="js/jquery.js"></script>
 	<script src="js/common.js"></script>
 	<script src="js/jquery.preload.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Nunito:700,300,400' rel='stylesheet' type='text/css'>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var api_Url = 'https://api.flickr.com/services/rest/';
 			var key = 'e2d99c3ff7885e30c624973bb84fdb09';
-			var itemLimit = 10;
+			var itemLimit = 50;
 			var page = 1;
 			var usr = '126218952@N06';
 			var hash = window.location.search;
@@ -135,13 +136,23 @@
 			});
 });
 	</script>
-	<title>■</title>
+	<title>flickr-js | digi-tamari</title>
 </head>
 <body>
+<header role="banner">
+	<h1>flickr-js</h1>
+	<p><span>tags</span></p>
+</header>
 <ul id="tags">
 </ul>
-<ul id="FlickrPhotos">
-</ul>
-<p class="nextbtn">続きを表示</p>
+<main role="main">
+	
+	<ul id="FlickrPhotos">
+	</ul>
+	<p class="nextbtn">続きを表示</p>
+</main>
+<footer role="contentinfo">
+	<p><small>Copyright &copy; digi_tamaring All Rights Reserved.</small></p>
+</footer>
 </body>
 </html>
