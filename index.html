@@ -62,10 +62,8 @@
 			//get Photo
 			function getPhoto(c,state,status) {
 				$('body').addClass("load");
-				console.log(c+':'+state+':'+status);
 				stateLog = !state ? "" :state.replace("?tags=","");
 				page = !c ? page :c;
-				console.log(page);
 				getApi({
 					method: ['photos','search'],
 					api_key: key,
@@ -137,7 +135,6 @@
 			getPhoto("",hash,false);
 
 			$nextBtn.click(function() {
-				console.log(hash);
 				getPhoto(page+1,hash,false);
 				return false;
 			});
