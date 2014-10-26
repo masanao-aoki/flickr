@@ -29,8 +29,6 @@
 			var json;
 			$nextBtn.hide();
 
-			console.log(defaultUri);
-
 			function preloadComplate(e,titles) {
 				$('body').removeClass("load");
 				for(var i = 0;i < e.imgs.length;i++) {
@@ -54,7 +52,7 @@
 					api_key: key,
 					user_id: usr
 				},function(tags){
-						$('#tags').append('<li><a href="'+defaultUri+'">all</a></li>')
+						$('#tags').append('<li><a class="first" href="'+defaultUri+'">all</a></li>')
 						for ( i=0; i < tags.who.tags.tag.length; i ++ ) {
 							$('#tags').append('<li><a href="?tags='+tags.who.tags.tag[i]._content+'">'+ tags.who.tags.tag[i]._content +'</a></li>')
 						}
@@ -145,7 +143,7 @@
 			});
 
 			//tag click
-			$(document).on('click','#tags li a',function(e){
+			$(document).on('click','#tags li a:not(.first)',function(e){
 				var url = encodeURI($(this).attr('href'));
 				var state = encodeURI($(this).attr('href'));
 				history.pushState(state, "", url);
