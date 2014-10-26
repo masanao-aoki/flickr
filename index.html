@@ -18,6 +18,7 @@
 			var api_Url = 'https://api.flickr.com/services/rest/';
 			var key = 'e2d99c3ff7885e30c624973bb84fdb09';
 			var itemLimit = 12;
+			var defaultUri = window.location.href.replace(window.location.search,"");
 			var page = 1;
 			var usr = '126218952@N06';
 			var hash = window.location.search;
@@ -28,13 +29,7 @@
 			var json;
 			$nextBtn.hide();
 
-			function pageCounter(p) {
-				var count = p;
-				return function() {
-					return count++;
-				}
-			}
-			sumObj = pageCounter(2);
+			console.log(defaultUri);
 
 			function preloadComplate(e,titles) {
 				$('body').removeClass("load");
@@ -59,7 +54,7 @@
 					api_key: key,
 					user_id: usr
 				},function(tags){
-						$('#tags').append('<li><a href="'+window.location.hostname+'">all</a></li>')
+						$('#tags').append('<li><a href="'+defaultUri+'">all</a></li>')
 						for ( i=0; i < tags.who.tags.tag.length; i ++ ) {
 							$('#tags').append('<li><a href="?tags='+tags.who.tags.tag[i]._content+'">'+ tags.who.tags.tag[i]._content +'</a></li>')
 						}
@@ -69,8 +64,10 @@
 			//get Photo
 			function getPhoto(c,state,status) {
 				$('body').addClass("load");
+				console.log(c+':'+state+':'+status);
 				stateLog = !state ? "" :state.replace("?tags=","");
 				page = !c ? page :c;
+				console.log(page);
 				getApi({
 					method: ['photos','search'],
 					api_key: key,
@@ -142,15 +139,17 @@
 			getPhoto("",hash,false);
 
 			$nextBtn.click(function() {
-				getPhoto(sumObj(),hash,false);
+				console.log(hash);
+				getPhoto(page+1,hash,false);
+				return false;
 			});
 
 			//tag click
 			$(document).on('click','#tags li a',function(e){
-				var url = $(this).attr('href');
-				var state = $(this).attr('href');
+				var url = encodeURI($(this).attr('href'));
+				var state = encodeURI($(this).attr('href'));
 				history.pushState(state, "", url);
-				getPhoto("",state,true);
+				getPhoto(1,state,true);
 				return false;
 			});
 
@@ -160,7 +159,7 @@
 				if(json) {
 					json.abort();
 				}
-				getPhoto("",state,true);
+				getPhoto(1,state,true);
 			 });
 
 });
