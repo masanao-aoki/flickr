@@ -36,10 +36,10 @@
 			}
 			sumObj = pageCounter(2);
 
-			function preloadComplate(e) {
+			function preloadComplate(e,titles) {
 				$('body').removeClass("load");
 				for(var i = 0;i < e.imgs.length;i++) {
-					$('#FlickrPhotos').append('<li class="off"><a data-fancybox-group="gallery" href="' + e.imgs[i].replace("_s","") + '"><img src="' + e.imgs[i] + '"></a></li>');
+					$('#FlickrPhotos').append('<li class="off"><a data-fancybox-group="gallery" title="'+ titles[i] +'" href="' + e.imgs[i].replace("_s","") + '"><img src="' + e.imgs[i] + '"></a></li>');
 					setTimeout(function () {
 						$('#FlickrPhotos li').eq(showSumNum).removeClass("off");
 						showSumNum++
@@ -82,16 +82,19 @@
 				},function(json){
 						totalCheck(json.photos.page,json.photos.perpage,json.photos.total);
 						var imgPath = [];
+						var titles = [];
 						for ( i=0; i < json.photos.photo.length; i ++ ) {
 							var farm = json.photos.photo[i].farm;
 							var server = json.photos.photo[i].server;
 							var secret = json.photos.photo[i].secret;
+							var titleName = json.photos.photo[i].title;
 							var id = json.photos.photo[i].id;
 							imgPath[i] = 'http://farm'+farm+'.staticflickr.com/'+server+'/'+id+'_'+secret+'_s.jpg';
+							titles[i] = titleName;
 						}
 						$(window).preload({
 							imgs : imgPath,
-							onComplete : function(e){preloadComplate(e);},
+							onComplete : function(e){preloadComplate(e,titles);},
 							loadFunction : function(e){},
 							timerSpeed : 10
 						});
@@ -154,7 +157,6 @@
 			//pop state
 			$(window).on('popstate', function(jqevent) {
 				state = jqevent.originalEvent.state;
-				//console.log(state);
 				if(json) {
 					json.abort();
 				}
