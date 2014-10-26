@@ -9,8 +9,10 @@
 	<link rel="stylesheet" href="css/import.css">
 	<script src="js/jquery.js"></script>
 	<script src="js/common.js"></script>
+	<script src="js/jquery.fancybox.js"></script>
 	<script src="js/jquery.preload.min.js"></script>
 	<link href='http://fonts.googleapis.com/css?family=Nunito:700,300,400' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css?v=2.1.5" media="screen" />
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var api_Url = 'https://api.flickr.com/services/rest/';
@@ -35,8 +37,9 @@
 
 			function preloadComplate(e) {
 				$('body').removeClass("load");
+				console.log(e);
 				for(var i = 0;i < e.imgs.length;i++) {
-					$('#FlickrPhotos').append('<li class="off"><a href="' + e.imgs[i].replace("_s","") + '"><img src="' + e.imgs[i] + '"></a></li>');
+					$('#FlickrPhotos').append('<li class="off"><a data-fancybox-group="gallery" href="' + e.imgs[i].replace("_s","") + '"><img src="' + e.imgs[i] + '"></a></li>');
 					setTimeout(function () {
 						$('#FlickrPhotos li').eq(showSumNum).removeClass("off");
 						showSumNum++
@@ -76,12 +79,14 @@
 					user_id: usr,
 					init_status: status
 				},function(json){
+						console.log(json);
 						totalCheck(json.photos.page,json.photos.perpage,json.photos.total);
 						var imgPath = [];
 						for ( i=0; i < json.photos.photo.length; i ++ ) {
 							var farm = json.photos.photo[i].farm;
 							var server = json.photos.photo[i].server;
 							var secret = json.photos.photo[i].secret;
+							var title = json.photos.photo[i].title;
 							var id = json.photos.photo[i].id;
 							imgPath[i] = 'http://farm'+farm+'.staticflickr.com/'+server+'/'+id+'_'+secret+'_s.jpg';
 						}
@@ -181,6 +186,12 @@
 				$(this).toggleClass("ac");
 				$tagtarget.slideToggle();
 			});
+
+			$('#FlickrPhotos li a').fancybox({
+				openEffect	: 'none',
+				closeEffect	: 'none'
+			});
+
 		});
 	</script>
 	<title>flickr-js | digi-tamari</title>
