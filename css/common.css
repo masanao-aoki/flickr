@@ -58,7 +58,7 @@ ul#FlickrPhotos li img { vertical-align: bottom; }
 
 p.nextbtn { clear: both; }
 
-#tags { transition: top 0.1s linear 0; position: fixed; top: 70px; width: 100%; overflow: hidden; display: none; margin: 0 0 12px 0; padding: 12px 16px; z-index: 9998; opacity: 0.8; background: #666;
+#tags { transition: top 0.1s linear 0; position: fixed; top: 70px; width: 100%; overflow: hidden; display: none; margin: 0 0 12px 0; padding: 12px 16px; z-index: 998; opacity: 0.8; background: #666;
 }
 #tags.ac { top: 52px; } 
 #tags li { float: left; margin: 0 2px; list-style: none; }
