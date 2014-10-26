@@ -140,9 +140,16 @@
 			});
 
 			//tag click
-			$(document).on('click','#tags li a:not(.first)',function(e){
-				var url = encodeURI($(this).attr('href'));
-				var state = encodeURI($(this).attr('href'));
+			$(document).on('click','#tags li a',function(e){
+				var url = "";
+				var state = "";
+				if(!$(this).hasClass('first')) {
+					url = encodeURI($(this).attr('href'));
+					state = encodeURI($(this).attr('href'));	
+				}
+				else {
+					url = defaultUri;
+				}
 				history.pushState(state, "", url);
 				getPhoto(1,state,true);
 				return false;
