@@ -135,6 +135,7 @@
 			getPhoto("",hash,false);
 
 			$nextBtn.click(function() {
+				hash = window.location.search;
 				getPhoto(page+1,hash,false);
 				return false;
 			});
