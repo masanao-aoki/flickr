@@ -70,7 +70,6 @@
 			function getPhoto(c,state,status) {
 				$('body').addClass("load");
 				stateLog = !state ? "" :state.replace("?tags=","");
-				console.log(stateLog);
 				page = !c ? page :c;
 				getApi({
 					method: ['photos','search'],
@@ -155,7 +154,7 @@
 			//pop state
 			$(window).on('popstate', function(jqevent) {
 				state = jqevent.originalEvent.state;
-				console.log(state);
+				//console.log(state);
 				if(json) {
 					json.abort();
 				}
